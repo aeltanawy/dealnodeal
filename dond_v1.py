@@ -4,7 +4,7 @@ import pandas as pd
 import random
 
 
-class NewGame:
+class DondGame:
 
     def __init__(self, name, chosen_box):
         '''
@@ -12,9 +12,9 @@ class NewGame:
         '''
         self.name = name
         self.played = ''
-        self.chosen_box = int(chosen_box)
-        self.open_box = ''
-        self.turns_left = 23
+        self.player_box = int(chosen_box)
+        #self.open_box = 0, no need to keep track of this
+        #self.turns_left_into_offer = 5, compute this from the box df info
         self.win = False
         self.deal = False
         self.box_df = self.box_assignment()
@@ -26,15 +26,16 @@ class NewGame:
         '''
         box_value= [0.01,0.10,0.50,1.00,5.00,10.00,50.00,100.00,250.00,500.00,750.00,1000.00,3000.00,5000.00,10000.00,15000.00,20000.00,35000.00,50000.00,75000.00,100000.00,250000.00]
         random.shuffle(box_value)
-        df = pd.DataFrame({'state': 'closed', 'value': box_value}, index=range(1,23))
+        df = pd.DataFrame({'state': 'closed', 'value': box_value},
+            index=range(1,23))
         box_df = df.rename_axis("box", axis="columns")
         return box_df
 
-    def box_update(self, num, value):
+    def box_update(self, num, state):
         '''
         This method changes the state value of the chosen box in the DataFrame.
         '''
-        self.box_df.loc[num, 'state'] = value
+        self.box_df.loc[num, 'state'] = state
 
     def box_to_print(self):
         '''
@@ -47,7 +48,7 @@ class NewGame:
 def main():
     #end_game = False
     #while not end_game:
-    welcome_msg()
+    welcome_msg(
     name = input('Enter your name: ').capitalize()
     while True:
         try:
