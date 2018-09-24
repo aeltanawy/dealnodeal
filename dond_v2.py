@@ -25,15 +25,16 @@ class DNDApp:
     def choose_player(self):
         """Choose a player from a list or create a new one."""
         #import pdb; pdb.set_trace()
-        i = 0
-        for i, value in enumerate(self.player_list):
+        i = -1
+        for i, value in enumerate(self.player_list): # this will start i = 0
             print(f'{i+1}: {value.strip()}')
 
+        #create a constant of i+2 then you don't have to repeat yourself typing numbers
         print(f'{i+2}: Create new')
 
         # TODO: validate the input values below
         player_num = int(input('Choose a number from the above list: '))
-        if player_num == i+1:
+        if player_num == i+2:
             new_player_name = input('Enter a new player name: ')
             players.append(new_player_name)
 
@@ -45,7 +46,7 @@ class DNDPlayer:
     def load_player_list(): # static method working w/ global data, common for all instances
         with open('players_name.txt') as f:
             f.seek(0)
-            names = f.readlines()
+            names = f.readlines() #create a new list with stripped names, using list comprehension
 
         return names
 
