@@ -14,7 +14,7 @@ class DNDApp:
         while True:
             player = self.choose_player()
 
-            #  FIXME
+            # FIXME
             game = DNDGame()
             game.play()
             result = game.did_win()
