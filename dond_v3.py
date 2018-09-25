@@ -26,7 +26,7 @@ class DNDApp:
     def choose_player(self):
         """Choose a player from a list or create a new one."""
         #import pdb; pdb.set_trace()
-        i = 0
+        i = -1
         for i, player in enumerate(self.player_list):
             print(f'{i+1}: {player.name} (${sum(player.record)})')
 
