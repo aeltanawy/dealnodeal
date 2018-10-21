@@ -47,19 +47,25 @@ class DNDApp:
 
 
 class DNDGame:
+    #PLAYER_BOX = None
+    #boxes = {}
+
     def play(self):
-
+        #import pdb; pdb.set_trace()
         # Setup the 22 boxes for the current game.
-        self.boxes = DNDBox.setup_boxes()
+        game_boxes = DNDBox()
+        self.boxes = game_boxes.setup_boxes()
 
-        # Choose a box number to keep at the begining of the game.
-        self.choose_player_box()
+        # Choose a box number to keep at the begining of the game. Update the box state to 'PLAYER_BOX'.
+        player_box_num = self.choose_player_box()
+        player_box_state = BoxState(2).name
+        self.boxes = game_boxes.update_box_state(self.boxes, player_box_num, player_box_state)
 
         # Start of game loop
         end_game = False
         while not end_game:
             self.show_boxes_and_menu()
-
+            end_game = True
 
         return
 
@@ -69,7 +75,8 @@ class DNDGame:
 
         print('\nMenu:', end=" ")
         for i in Menu:
-            print('f({i.value}) {i.name}', end=" | ")
+            print(f'({i.value}) {i.name}', end=" | ")
+        print('\n')
 
 
     def endingMoney(self):
@@ -77,9 +84,8 @@ class DNDGame:
 
     def choose_player_box(self):
         player_box_num = int(input('Choose a box number from 1 to 22 to keep: '))
-        player_box_state = BoxState(2).name
 
-        DNDBox.update_box_state(player_box_num, player_box_state)
+        return player_box_num
 
 
 class DNDPlayer:
@@ -91,13 +97,16 @@ class DNDPlayer:
 
 class DNDBox:
 
-    def update_box_state(self, num, state):
-        DNDGame.boxes[num][1] = state
+    def update_box_state(self, boxes, num, state):
+        updated_boxes = boxes
+        updated_boxes[num][1] = state
+        return updated_boxes
 
-    def shuffle_box_values(self):
+    def assign_box_values(self):
         # shuffle values between 0.01 and 25000 randomly in a list and returns that list.
-        values = [0.01,0.10,0.50,1.00,5.00,10.00,50.00,100.00,250.00,50.000,750.00,1000.00,3000.00,5000.00,10000.00,15000.00,20000.00,35000.00,50000.00,75000.00,100000.00,250000.00]
-        box_values = random.shuffle(values)
+        #import pdb; pdb.set_trace()
+        box_values = [0.01,0.10,0.50,1.00,5.00,10.00,50.00,100.00,250.00,50.000,750.00,1000.00,3000.00,5000.00,10000.00,15000.00,20000.00,35000.00,50000.00,75000.00,100000.00,250000.00]
+        random.shuffle(box_values)
 
         return box_values
 
@@ -105,7 +114,7 @@ class DNDBox:
         # assign 'closed' state and values to each box. Returns a dict with the boxes value and state.
         boxes = {}
         box_state = BoxState(0).name
-        values = self.shuffle_box_values()
+        values = self.assign_box_values()
         for index in range(22):
             box_num = index+1
             box_value = values[index]
