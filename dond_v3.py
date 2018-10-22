@@ -122,6 +122,7 @@ class DNDBox:
 
         return boxes
 
+
 class BoxState(Enum):
     CLOSED = 0
     OPENED = 1
